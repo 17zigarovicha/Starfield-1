@@ -1,26 +1,100 @@
-//your code here
+Particle stars[]=new Particle[1111];
+int sizeX=500;
+int sizeY=500;
 void setup()
 {
-	//your code here
+	size(sizeX,sizeY);
+	for(int i=0;i<stars.length-2;i++)
+	{
+		stars[i]=new NormalParticle();
+	}
+	stars[stars.length-2]=new OddballParticle();
+	stars[stars.length-1]=new JumboParticle();
 }
 void draw()
 {
-	//your code here
+	fill(0,0,0,30);
+	rect(-1,-1,sizeX+2,sizeY+2);
+	for(int i=0;i<stars.length;i++)
+	{
+		stars[i].move();
+		stars[i].show();
+	}
 }
-class NormalParticle
+class NormalParticle implements Particle
 {
-	//your code here
+	float r,g,b;
+	double x,y,speed,angle;
+	int size;
+	NormalParticle()
+	{
+		r=(int)(Math.random()*256);
+		g=(int)(Math.random()*256);
+		b=(int)(Math.random()*256);
+		x=sizeX/2;
+		y=sizeY/2;
+		speed=Math.random()*5;
+		angle=Math.random()*TWO_PI;
+		size=10;
+	}
+	void move()
+	{
+		angle=angle+0.0075;
+		x=x+(Math.cos(angle))*speed;
+		y=y+(Math.sin(angle))*speed;
+	}
+	void show()
+	{
+		stroke(r,g,b);
+		fill(r,g,b);
+		rect((float)x,(float)y,size,size);
+	}
 }
 interface Particle
 {
-	//your code here
+	public void move();
+	public void show();
 }
-class OddballParticle //uses an interface
+class OddballParticle implements Particle
 {
-	//your code here
+	double x,y,speed,angle;
+	int size;
+	OddballParticle()
+	{
+		x=sizeX/2;
+		y=sizeY/2;
+		speed=Math.random()*10;
+		angle=Math.random()*TWO_PI;
+		size=15;
+	}
+	void move()
+	{
+		angle=angle+0.0075;
+		x=x-(Math.cos(angle))*speed;
+		y=y-(Math.sin(angle))*speed;
+		if(x<0||x>sizeX)
+		{
+			x=x+(Math.cos(angle))*speed;
+		}
+		if(y<0||y>sizeY)
+		{
+			y=y+(Math.sin(angle))*speed;
+		}
+
+	}
+	void show()
+	{
+		stroke(255);
+		fill(255);
+		ellipse((float)x,(float)y,size,size);
+
+	}
 }
-class JumboParticle //uses inheritance
-{
-	//your code here
+class JumboParticle extends NormalParticle
+{	
+	JumboParticle()
+	{
+		size=25;
+	}
 }
 
